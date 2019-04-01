@@ -9,6 +9,7 @@
     3). React高效的原因
        虚拟(virtual)DOM, 不总是直接操作真实DOM(批量更新, 减少更新的次数) 
        高效的DOM Diff算法, 最小化DOM更新
+       
 ## 2. 说说jSX	
     1). JSX 是一个看起来很像 XML 的 js 语法扩展
     2). 作用: 创建虚拟DOM(元素对象)
@@ -62,3 +63,107 @@
     2). 生成新的虚拟DOM树  ==> render()
     3). 计算出新树与老树的节点差异，然后做真实DOM的差异更新
     
+# day02
+## 1. 说说受控组件与非受制组件
+    受控组件: 包含Form输入的组件, 且在用户输入数据时自动实时收集到状态中, 相关技术: onChange + state
+    非受控组件: 包含Form输入的组件, 用户输入的数据在提交表单请求才手动收集, 相关技术: ref
+
+## 2. 说说组件的生命周期
+    一、初始化阶段：ReactDOM.render(<Xxx/>, containDom)
+       constructor(): 构造器方法
+       componentWillMount：组件即将被挂载
+       *render:生成/返回对应的虚拟DOM
+       *componentDidMount:组件真正在被挂载(初始显示)之后
+    
+    二、更新阶段：this.setState({})
+       *componentWillReceiveProps:组件将要接收到新的属性时调用
+       *shouldComponentUpdate:组件接受到新属性或者新状态的时候调用（如果返回false,不调用render(), 否则调用）
+       componentWillUpdate:组件将要更新
+       *render:生成/返回新的虚拟DOM
+       componentDidUpdate:组件已经更新
+    
+    三、销毁阶段：ReactDOM.unmountComponentAtNode(div)
+       *componentWillUnmount:组件即将销毁
+
+## 3. 说说react中的key的作用  | 为什么key不要使用index
+    1. 虚拟DOM的key的作用?
+       1). 简单说: key是虚拟DOM对象的标识, 在更新显示时key起着极其重要的作用
+       2). 详细说: 当列表数组中的数据发生变化生成新的虚拟DOM后, React进行新旧虚拟DOM的diff比较
+           a. key没有变
+               item数据没变, 直接使用原来的真实DOM
+               item数据变了, 对原来的真实DOM进行数据更新
+           b. key变了
+               销毁原来的真实DOM, 根据item数据创建新的真实DOM显示(即使item数据没有变)
+    2. key为index的问题
+       1). 添加/删除/排序 => 产生没有必要的真实DOM更新 ==> 界面效果没问题, 但效率低
+       2). 如果item界面还有输入框 => 产生错误的真实DOM更新 ==> 界面有问题
+       注意: 如果不存在添加/删除/排序操作, 用index没有问题
+    3. 解决:
+       使用item数据的标识数据作为key, 比如id属性值
+  
+## 4. 说说脚手架的理解
+    1). 用来创建基于某个特定库(react/vue)的模板项目的工具包
+    2). 全局下载脚手架后, 就会多出一个命令, 通过命令就可以创建项目
+    3). 创建出的项目已经是有完整配置, 依赖声明的一个模块化/组件化/工程化的项目
+
+## 5. 说说项目的开发环境运行与生产环境打包运行
+    1). 开发环境运行
+       a. 命令:
+          npm start/ npm  run dev
+       b. 背后做了什么
+          在内存中生成打包文件(不生成本地打包文件)
+          启动服务器运行内存中的打包文件
+    2). 生产环境打包运行
+       a. 命令
+          npm run build
+          serve build/dist
+       b. 背后做了什么
+          在内存中生成打包文件
+          生成本地打包文件
+          启动服务器加载运行本地打包文件
+
+## 6. 为什么虚拟dom和dom diff算法能提高性能?
+    虚拟dom相当于在js和真实dom中间加了一个缓存，利用dom diff算法避免了没有必要的dom操作，从而提高性能。
+    具体实现步骤如下：
+       1). 用一般JS对象结构表示 DOM 树的结构, 然后用这个树构建一个真正的DOM树显示到页面
+       2). 当状态更新的时候，重新构造一棵新的对象树
+       3). 然后用新的树和旧的树进行diff比较, 得到虚拟DOM的差异, 并转化成对应的DOM更新
+![](https://i.imgur.com/3byb09Z.png)
+
+## 7. package.json的结构
+    {
+       "name": "react-demo", // 标识名称
+       "version": "1.0.0", // 版本号
+       "scripts": { // 打包运行相关的npm命令
+          "xxx": "具体命令"   npm run xxx
+       },
+       dependencies: {}, // 运行时依赖
+       devDependencies: {} // 开发时依赖
+    }
+
+## 8. 区别React中的事件与原生的DOM事件
+    1). 为了解决跨浏览器兼容性问题，React 会将浏览器原生事件封装为合成事件
+    2). React 并没有直接将事件附着到子元素上, 而是将事件绑定在了组件的根元素上(使用事件委托)
+    
+## 9. 命令式编程与声明式编程
+    声明式编程
+  		只关注做什么, 而不关注怎么做(流程),  类似于填空题
+  	命令式编程
+  		要关注做什么和怎么做(流程), 类似于问答题
+  	
+  	var arr = [1, 3, 5, 7]
+  	// 需求: 得到一个新的数组, 数组中每个元素都比arr中对应的元素大10: [11, 13, 15, 17]
+  	// 命令式编程
+        var arr2 = []
+        for(var i =0;i<arr.length;i++) {
+          arr2.push(arr[i]+10)
+        }
+        console.log(arr2)
+  	// 声明式编程
+        var arr3 = arr.map(function(item){
+          return item +10
+        })
+  	// 声明式编程是建立命令式编程的基础上
+  	
+  	// 数组中常见声明式方法
+  		map() / forEach() / find() / findIndex()
