@@ -15,13 +15,14 @@ export default class App extends Component {
   }
 
   // 显示完初始界面后立即发送ajax请求
-  async componentDidMount () {
+  componentDidMount () {
     // 使用axios发送异步ajax请求
     const url = 'https://api.github.com/search/repositories?q=v&sort=stars'
 
 
-    try {
-      const response = await axios.get(url)
+
+    /*axios.get(url).then(response => { // 成功了
+      // console.log('response', response)
       const result = response.data
       const mostRepo = result.items[0]
       // 更新状态数据
@@ -31,9 +32,23 @@ export default class App extends Component {
         repoName,
         repoUrl
       })
-    } catch (error) {
+    }).catch(error => {
       alert('请求出错')
-    }
+    })*/
+
+    // 使用fetch发送异步ajax请求
+    fetch(url).then(response => response.json()).then(data => {
+      const mostRepo = data.items[0]
+      // 更新状态数据
+      const repoName = mostRepo.name
+      const repoUrl = mostRepo.html_url
+      this.setState({
+        repoName,
+        repoUrl
+      })
+    }).catch(error => {
+      alert('请求出错2')
+    })
   }
 
   render () {
@@ -46,14 +61,3 @@ export default class App extends Component {
 
   }
 }
-
-/*
-async与await
-1. 作用?
-    简化promise的使用, 干掉then(), 不使用异步回调函数
-    使用同步编码方式实现异步流程
-2. 哪里用await?
-    在返回promsie对象的表达式左侧使用, 得到promise异步返回的结果
-3. 哪里async?
-    await语句所在的函数定义左侧使用
- */
