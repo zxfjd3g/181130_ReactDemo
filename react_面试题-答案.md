@@ -160,10 +160,11 @@
         }
         console.log(arr2)
   	// 声明式编程
-        var arr3 = arr.map(function(item){
+        var arr3 = arr.map(function(item, index){
           return item +10
         })
   	// 声明式编程是建立命令式编程的基础上
   	
   	// 数组中常见声明式方法
-  		map() / forEach() / find() / findIndex()
+  		map() / forEach() / find() / findIndex() / reduce()
+  		arr.find(item => item>3)
