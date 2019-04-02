@@ -23,7 +23,13 @@ export default class Message extends Component {
       })
     }, 1000)
 
+  }
 
+  pushShow = (path) => {
+    this.props.history.push(path)
+  }
+  replaceShow = (path) => {
+    this.props.history.replace(path)
   }
 
   render() {
@@ -35,10 +41,13 @@ export default class Message extends Component {
             messages.map((m) => (
               <li key={m.id}>
                 <Link to={`/home/message/${m.id}`}>{m.title}</Link>
+                --<button onClick={() => this.pushShow(`/home/message/${m.id}`)}>push查看</button>
+                --<button onClick={() => this.replaceShow(`/home/message/${m.id}`)}>replace查看</button>
               </li>
             ))
           }
         </ul>
+        <button onClick={() => this.props.history.goBack()}>back</button>
         <Route path='/home/message/:id' component={MessageDetail}/>
       </div>
     )
