@@ -233,3 +233,49 @@
         在返回promise对象的表达式左侧, 为了直接得到异步返回的结果, 而不是promsie对象
     3). 哪里使用async?
         使用了await的函数定义左侧
+        
+# day04
+## 1. 说说你对SPA的理解
+    1). 单页Web应用（single page web application，SPA）, 整个应用只有一个完整的页面
+    3)	点击页面中的路由链接不会向服务器发请求/刷新, 只会做页面的局部更新
+    2)	数据都需要另外发ajax请求获取异步显示
+    
+## 2. GET请求的2种请求参数
+    1). query参数: 
+        路由path: /register
+        请求path: /register?username=xxx&password=yyy   
+        获取参数: req.query.username
+    2). param参数: 
+        路由path: /register/:username/:password
+        请求path: /register/xxx/123   /register/yyy/234  
+        获取参数: req.params.username
+
+## 3. 说说对react-router的理解
+    1). 用来实现SPA的react插件(react-router-dom)
+    2). 相关API:
+        a. 组件
+            <HashRouter> / <BrowserRouter>: 路由器
+            <Route>: 路由
+            <Redirect>: 自动重定向
+            <NavLink> / <Link>: 路由链接
+            <Switch>: 在多个路由之间切换显示其中一个
+        b. 对象或函数
+            props.history对象: 包含路由跳转的方法
+            props.match对象: 包含param参数
+            props.location对象: 包含请求路径
+            withRouter函数: 包装非路由组件, 向其传入history/match/location属性
+
+## 4. 描述一下你的React项目
+    1). 此项目为一个前后台分离的后台管理的SPA
+    2). 包括用户管理 / 商品分类管理 / 商品管理 / 权限管理等功能模块
+    3). 前端应用: 使用React全家桶 + Axios + ES6 + Webpack等技术
+    5). 采用模块化、组件化、工程化的模式开发
+
+## 5. 什么是API接口和测接口 
+    1). API接口
+        1). url
+        2). 请求方式 
+        3). 请求参数格式
+        4). 响应数据格式
+    2). 测接口
+        测试接口文档与真实接口是否一致
