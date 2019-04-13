@@ -12,7 +12,7 @@ export default class App extends Component {
   increment = () => {
     const number = this.refs.numberSelect.value * 1
     // 告诉store去更新count
-    this.props.store.dispatch(increment(number))
+    this.props.store.dispatch(increment(number)) // 会触发reducer调用 ==> 新的state
   }
   decrement = () => {
     const number = this.refs.numberSelect.value * 1
